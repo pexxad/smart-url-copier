@@ -10,7 +10,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     })
   });
   // 先頭の("数値")を除去
-  let title = result.title.replace(/^\([0-9]+\)\s*/, "").trim();
+  let title = result.title.replace(/^\(\d+\+?\)\s*/, "").trim();
   let url = result.url;
 
   // 各フォーマット生成
