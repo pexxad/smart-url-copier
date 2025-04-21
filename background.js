@@ -1,14 +1,17 @@
 chrome.action.onClicked.addListener(async (tab) => {
-  if (!tab.id || !tab.url) return;
-  const url = tab.url;
+  if (!tab.id) return;
 
-  // document.title を取得
-  const [{ result: rawTitle }] = await chrome.scripting.executeScript({
+  // document.title と window.location.href を取得
+  const [{ result }] = await chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: () => document.title
+    func: () => ({
+      title: document.title,
+      url: window.location.href
+    })
   });
   // 先頭の("数値")を除去
-  let title = rawTitle.replace(/^\([0-9]+\)\s*/, "").trim();
+  let title = result.title.replace(/^\([0-9]+\)\s*/, "").trim();
+  let url = result.url;
 
   // 各フォーマット生成
   const html = `<a href="${url}">${title}</a>`;
